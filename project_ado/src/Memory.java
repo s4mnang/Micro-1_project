@@ -22,8 +22,6 @@ public class Memory {
         if (current == 0)
             return false;
         String currentVal = Integer.toString(Integer.parseInt(Integer.toString(current), 10), 16);
-        System.out.println("Address : " + address);
-        System.out.println("currentVal  : " + currentVal);
         int len = currentVal.length();
         if (len != 3)
             return true;
@@ -31,9 +29,6 @@ public class Memory {
         int a = (current/10)%10;
         int b = current%10;
         int p = (current/100);
-        System.out.println("a : " + a);
-        System.out.println("b  : " + b);
-        System.out.println("p  : " + p);
         switch (p) {
             case 1:
                 processor.load(a, b);

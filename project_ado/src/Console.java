@@ -46,6 +46,36 @@ public class Console {
 
       @param fName the name of a file containing hex numbers
     */
+	public void loadAssembly(String fName) {
+		try {
+
+			String[] instr = 
+					{ "halt", "load","loadc","store","add","mul","sub","div","and","or","not","lshift","rshift","bwc","bwd","if"};
+			List<String> instructions = Arrays.asList(instr);
+			
+			File f = new File(fName);
+			Scanner scan  = new Scanner(f);
+			String instruction;
+			int address = 0;
+			while(scan.hasNext()) 
+			{
+				String line = scan.nextLine();
+				String[] splitedLine = line.split("\\s+");
+				if (splitedLine.length == 1)
+					instruction = splitedLine[0];
+				else 
+				{
+					String a = splitedLine[1];
+					String b = (splitedLine.length == 2 ) ? "0" :splitedLine[2];
+					instruction = Integer.toString(instructions.indexOf(splitedLine[0]), 16) + a + b;				}
+				memory.write(address++, Integer.parseInt(instruction,16));
+			}
+			cpu.setPC(0);
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+
 	public void load(String fName) {
 		try {
 			File f = new File(fName);
@@ -65,6 +95,7 @@ public class Console {
     */
 	public void help() {
 		System.out.println("load fileName \t loads hex memory image into memory");
+		System.out.println("loadAssembly fileName \t loads Assembly into memory");
 		System.out.println("memory \t\t dumps memory to console");
 		System.out.println("registers \t dumps registers to console");
 		System.out.println("step N \t\t executes next N instructions or until halt");
@@ -94,6 +125,9 @@ public class Console {
 				help();
 			} else if (cmmd.equals("load")) {
 				load(kbd.next());
+				System.out.println("done");
+			} else if (cmmd.equals("loadAssembly")) {
+				loadAssembly(kbd.next());
 				System.out.println("done");
 			} else if (cmmd.equals("memory")) {
 				memory.dump();
