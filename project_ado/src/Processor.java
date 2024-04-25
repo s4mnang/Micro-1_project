@@ -23,26 +23,24 @@ public class Processor {
     }
 
     public void dump() {
-        for (int i = 0; i < reg.length; i++) {
-            System.out.printf("%02X: %d\n", i, reg[i]);
+        for (int i = 0; i < reg.length; i++) 
+        {
+            System.out.printf("%02X: %02X\n", i, reg[i]);
         }
     }
 
-    public void setMemory(Memory mem) {
+    public void setMemory(Memory mem) 
+    {
         this.mem = mem;
     }
 
-    public void setPC(int mem) {
+    public void setPC(int mem) 
+    {
         PC = mem;
     }
-
-
-    public void halt() { //0. halt = stop fetch-execute cycle
-        reg[0] = 0; // pas sur du move
-    }
-
+    
     public void load(int a, int b) { // 1
-        reg[a] = reg[b];
+        reg[a] = mem.getMem()[reg[b]];
     }
 
     public void loadc(int a) { // 2
