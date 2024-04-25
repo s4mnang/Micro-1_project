@@ -1,104 +1,108 @@
+package project_ado.src;
+
 public class Processor {
 
-    private int[] proc;
+    private int PC;
+    private int IR;
+    private final int[] reg;
     private Memory mem;
 
     public Processor() {
-        proc = new int[256]; // utile ?
+        reg = new int[8];
+        PC = 1;
+        IR = -1;
     }
 
-    public boolean step() {
-        boolean halt = true;
-        if (proc[0] == 0) { // proc[0]  ?????????
-            halt = false;
-        }
-        return halt;
+    public boolean step() 
+    {
+        IR = PC;
+        if (reg[IR] == 0)
+            return false;
+        mem.read(mem.getMem()[IR]);
+        PC++;
+        return true;
     }
 
     public void dump() {
-        for (int i = 0; i < proc.length; i++) {
-            System.out.printf("%02X: %02X\n", i, proc[i]);
+        for (int i = 0; i < reg.length; i++) {
+            System.out.printf("%02X: %02X\n", i, reg[i]);
         }
     }
 
-    public void setMemory( Memory mem) {
+    public void setMemory(Memory mem) {
         this.mem = mem;
     }
 
     public void setPC(int mem) {
-        proc[0] = mem;
+        PC = mem;
     }
 
 
     public void halt() { //0. halt = stop fetch-execute cycle
-        proc[0] = 0; // pas sur du move
+        reg[0] = 0; // pas sur du move
     }
 
     public void load(int a, int b) { // 1
-        proc[a] = mem.read(proc[b]);
+        reg[a] = mem.getMem()[reg[b]];
     }
 
     public void loadc(int a) { // 2
-        proc[a] = mem.read(proc[0]++);
+        reg[a] = mem.getMem()[reg[PC++]];
     }
 
     public void store(int a, int b) { // 3
-        mem.write(proc[a], proc[b]);
+        mem.getMem()[reg[a]] = reg[b];
     }
-    public int add(int a, int b) { // 4
-        return a + b;
-    }
-
-    public int mul(int a, int b) { // 5
-        return a * b;
+    public void add(int a, int b) { // 4
+        reg[a] = reg[a] + reg[b];
     }
 
-    public int sub(int a, int b) { // 6
-        return a - b;
+    public void mul(int a, int b) { // 5
+        reg[a] = reg[a] * reg[b];
     }
 
-    public int div(int a, int b) { // 7
-        return a / b;
+    public void sub(int a, int b) { // 6
+        reg[a] = reg[a] - reg[b];
     }
 
-    public int and(int a, int b) { // 8
-        if (a != 0 && b != 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+    public void div(int a, int b) { // 7
+        reg[a] = reg[a] / reg[b];
     }
 
-    public int or(int a, int b) { // 9
-        if (a != 0 || b != 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+    public void and(int a, int b) { // 8
+        if (reg[a]!= 0&&reg[b]!=0) 
+            reg[a]=1;
+        else reg[a]=0;
     }
 
-    public int not(int a, int b) { // 10 ou A
-        if (b != 0) {
-            return 0;
-        } else {
-            return 1;
-        }
+    public void or(int a, int b) { // 9
+        if (reg[a]!=0||reg[b]!=0) 
+            reg[a]=1;
+        else 
+            reg[a]=0;
     }
 
-    public int lshift(int a, int b) { // 11 ou B
-        return b << 1;
+    public void not(int a, int b) { // 10 ou A
+        if (reg[b]!=0) 
+            reg[a]=0;
+        else 
+            reg[a]=1;
     }
 
-    public int rshift(int a, int b) { // 12 ou C
-        return b >> 1;
+    public void lshift(int a, int b) { // 11 ou B
+        reg[a] = reg[b] << 1;
     }
 
-    public int bwc(int a, int b) { // 13 ou D
-        return a & b;
+    public void rshift(int a, int b) { // 12 ou C
+        reg[a] = reg[b] >> 1;
     }
 
-    public int bwd(int a, int b) { // 14 ou E
-        return a | b;
+    public void bwc(int a, int b) { // 13 ou D
+        reg[a] = reg[a] & reg[b];
+    }
+
+    public void bwd(int a, int b) { // 14 ou E
+        reg[a] = reg[a] | reg[b];
     }
 
     /*
