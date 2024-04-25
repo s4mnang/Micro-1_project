@@ -1,6 +1,11 @@
 public class Memory {
     private int[] mem;
 
+    // cretes a memory with as an array of 16 0s
+    public Memory() {
+        this(256);
+    }
+
     public Memory(int cap) {
         mem = new int[cap];
     }
@@ -19,4 +24,6 @@ public class Memory {
         }
 
     }
+
+
 }

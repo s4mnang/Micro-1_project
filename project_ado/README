@@ -24,6 +24,15 @@ Test your implementation by writing and running the following Micro-1 programs:
 3. cell[101] = cell[100] + cell[100]>>1 + cell[100]>>2 + ... + 1
 Note: these numbers are in base 10.
 
+
+traduction en hexadécimal:
+
+1)
+cell[67] = 3 * cell[64] + 2 * cell[65] + cell[66]
+2)
+cell[65] = 2^cell[64] // hint: use left shift
+
+
 6)
 Add an assembler
 Modify the load method in the Console class so that it reads a file containing Micro-1
