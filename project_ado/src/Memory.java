@@ -5,7 +5,6 @@ import java.text.BreakIterator;
 
 public class Memory {
     private final int[] mem;
-    private Processor processor;
 
     public int[] getMem() 
     {
@@ -13,21 +12,28 @@ public class Memory {
     }
 
 
-    // cretes a memory with as an array of 16 0s
-    public Memory() {
-        this(256);
-    }
-
     public Memory(int cap) {
         mem = new int[cap];
     }
 
-    public void read(int address)
+    public boolean read(int address, Processor processor)
     {
-        int len = Integer.toString(address).length();
-        int a = (address/10)%10;
-        int b = address%10;
-        int p = (address/100);
+        int current = mem[address];
+        if (current == 0)
+            return false;
+        String currentVal = Integer.toString(Integer.parseInt(Integer.toString(current), 10), 16);
+        System.out.println("Address : " + address);
+        System.out.println("currentVal  : " + currentVal);
+        int len = currentVal.length();
+        if (len != 3)
+            return true;
+        current = Integer.parseInt(currentVal);
+        int a = (current/10)%10;
+        int b = current%10;
+        int p = (current/100);
+        System.out.println("a : " + a);
+        System.out.println("b  : " + b);
+        System.out.println("p  : " + p);
         switch (p) {
             case 1:
                 processor.load(a, b);
@@ -72,6 +78,7 @@ public class Memory {
                 processor.bwd(a, b);
                 break;
         }
+        return true;
     }
     
 
@@ -85,6 +92,4 @@ public class Memory {
         }
 
     }
-
-
 }

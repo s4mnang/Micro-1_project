@@ -1,3 +1,6 @@
+import project_ado.src.Memory;
+import project_ado.src.Processor;
+
 import java.util.*;
 import java.io.*;
 
