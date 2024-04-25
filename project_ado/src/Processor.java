@@ -4,28 +4,27 @@ public class Processor {
 
     private int PC;
     private int IR;
-    private final int[] reg;
+    private int[] reg;
     private Memory mem;
 
     public Processor() {
         reg = new int[8];
-        PC = 1;
+        PC = 0;
         IR = -1;
     }
 
     public boolean step() 
     {
         IR = PC;
-        if (reg[IR] == 0)
-            return false;
-        mem.read(mem.getMem()[IR]);
+        if (!mem.read(IR, this))
+            return true;
         PC++;
-        return true;
+        return false;
     }
 
     public void dump() {
         for (int i = 0; i < reg.length; i++) {
-            System.out.printf("%02X: %02X\n", i, reg[i]);
+            System.out.printf("%02X: %d\n", i, reg[i]);
         }
     }
 
@@ -43,11 +42,12 @@ public class Processor {
     }
 
     public void load(int a, int b) { // 1
-        reg[a] = mem.getMem()[reg[b]];
+        reg[a] = reg[b];
     }
 
     public void loadc(int a) { // 2
-        reg[a] = mem.getMem()[reg[PC++]];
+        PC ++;
+        reg[a] = mem.getMem()[PC];
     }
 
     public void store(int a, int b) { // 3
