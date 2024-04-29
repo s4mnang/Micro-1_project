@@ -12,6 +12,11 @@ public class Processor {
         PC = 0;
         IR = -1;
     }
+    
+    public int[] getRegister()
+    {
+        return reg;
+    }
 
     public boolean step() 
     {
@@ -102,15 +107,5 @@ public class Processor {
     public void bwd(int a, int b) { // 14 ou E
         reg[a] = reg[a] | reg[b];
     }
-
-    /*
-    public void IF(int a, int b) { // 15 ou F
-        if (proc[a] != 0) {
-            proc[0] = mem[b];
-        }
-    }
-    */
-
-
 
 }

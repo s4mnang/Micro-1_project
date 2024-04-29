@@ -1,17 +1,16 @@
 package project_ado.src;
 
+import java.time.temporal.Temporal;
 
-import java.text.BreakIterator;
-
-public class Memory {
+public class Memory 
+{
     private final int[] mem;
 
     public int[] getMem() 
     {
         return mem;
     }
-
-
+    
     public Memory(int cap) {
         mem = new int[cap];
     }
@@ -75,16 +74,22 @@ public class Memory {
         }
         return true;
     }
-    
 
     public void write(int address, int value) {
         mem[address] = value;
     }
 
-    public void dump() {
+    public String dump() {
         for (int i = 0; i < mem.length; i++) {
             System.out.printf("%02X: %02X\n", i, mem[i]);
         }
+        String res ="";
+        for (int i = 0; i < mem.length; i++) 
+        {
 
+            res += String.format("%02X: %08X%n", i, mem[i]) + "\n";
+        }
+        return res;
     }
+    
 }
